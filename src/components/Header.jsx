@@ -43,7 +43,8 @@ const Header = () => {
           ? 'bg-[#3E5F44] shadow-lg py-0' 
           : 'bg-[#93DA97] bg-opacity-95 '
       }`}>
-       <div className="w-full flex items-center justify-between px-6 py-2 sm:py-4">
+        <div className="w-full max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between mx-auto">
+
           <a 
             href="#" 
             className="flex items-center space-x-2 sm:space-x-3 rtl:space-x-reverse min-w-0 flex-1 mr-4"
