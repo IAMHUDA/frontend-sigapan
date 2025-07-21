@@ -149,17 +149,12 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="hover:underline">
-                  Portal Koperasi & UKM
+                  Dinas Koperasi, UKM, Perindustrian dan Perdagangan
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:underline">
                   Harga Bahan Pokok
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Layanan Perizinan
                 </a>
               </li>
             </ul>

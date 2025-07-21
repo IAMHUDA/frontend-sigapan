@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import berasPremium from "../../assets/berasPremium.png";
 import berasMedium from "../../assets/bMedium.png";
@@ -46,7 +46,6 @@ import bawangBombay from "../../assets/bBombay.png";
 import sawiHijau from "../../assets/SawiHijau.png";
 import kentang from "../../assets/Kentang.png";
 
-
 const categories = [
   "Semua",
   "Beras",
@@ -61,8 +60,6 @@ const categories = [
   "Buah",
 ];
 const priceConditions = ["Harga Naik", "Harga Turun", "Harga Tetap"];
-
-
 
 const itemsList = [
   { name: "Beras Premium", category: "Beras" },
@@ -181,9 +178,15 @@ const allData = itemsList.map((item, index) => ({
 
 const ProductCard = ({ item }) => (
   <div className="bg-white shadow rounded-lg p-4 text-center">
-    <img src={item.image} alt={item.name} className="object-contain h-24 mx-auto mb-2" />
+    <img
+      src={item.image}
+      alt={item.name}
+      className="object-contain h-24 mx-auto mb-2"
+    />
     <h3 className="text-sm font-semibold mb-1">{item.name}</h3>
-    <p className="text-sm font-bold text-gray-800">Rp {item.price.toLocaleString()} /Kg</p>
+    <p className="text-sm font-bold text-gray-800">
+      Rp {item.price.toLocaleString()} /Kg
+    </p>
     <div className="text-xs mt-1">
       <span
         className={
@@ -204,9 +207,25 @@ const ProductGrid = () => {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [priceFilter, setPriceFilter] = useState("");
   const [page, setPage] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // New state for dropdown visibility
+  const dropdownRef = useRef(null); // Ref for the dropdown element
+
+  // Effect to handle clicks outside the dropdown to close it
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
 
   const filteredData = allData.filter((item) => {
-    const matchCategory = activeCategory === "Semua" || item.category === activeCategory;
+    const matchCategory =
+      activeCategory === "Semua" || item.category === activeCategory;
     const matchPrice =
       !priceFilter ||
       (priceFilter === "Harga Naik" && item.change === "up") ||
@@ -220,10 +239,14 @@ const ProductGrid = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-2xl font-bold text-center mb-2">Daftar Harga Bahan Pokok</h2>
-      <p className="text-center text-gray-500 mb-6">Pantau pergerakan harga semua bahan pokok secara real-time</p>
+      <h2 className="text-2xl font-bold text-center mb-2">
+        Daftar Harga Bahan Pokok
+      </h2>
+      <p className="text-center text-gray-500 mb-6">
+        Pantau pergerakan harga semua bahan pokok secara real-time
+      </p>
 
-      <div className="flex gap-2 mb-4 overflow-x-auto whitespace-nowrap">
+      <div className="flex gap-2 mb-4 overflow-x-auto whitespace-nowrap pb-3">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -242,23 +265,74 @@ const ProductGrid = () => {
         ))}
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <select
-          className="border rounded px-3 py-1 text-sm"
-          value={priceFilter}
-          onChange={(e) => {
-            setPriceFilter(e.target.value);
-            setPage(1);
-          }}
-        >
-          <option value="">Kondisi Harga</option>
-          {priceConditions.map((cond, idx) => (
-            <option key={idx} value={cond}>
-              {cond}
-            </option>
-          ))}
-        </select>
-        <div className="flex gap-4 text-xs items-center text-gray-500">
+      <div className="flex flex-wrap gap-2 sm:justify-between items-center mb-6">
+        <div className="relative w-full sm:w-auto" ref={dropdownRef}>
+          {" "}
+          {/* Apply ref to the dropdown container */}
+          <button
+            type="button"
+            className="w-full sm:w-48 border rounded px-3 py-2 text-sm bg-white text-left flex items-center justify-between"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            aria-haspopup="true"
+            aria-expanded={isDropdownOpen ? "true" : "false"}
+          >
+            {priceFilter || "Kondisi Harga"}
+            <svg
+              className="-mr-1 ml-2 h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          {isDropdownOpen && (
+            <div className="absolute z-10 mt-1 w-full sm:w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <ul
+                className="py-1"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex="-1"
+              >
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    setPriceFilter("");
+                    setIsDropdownOpen(false);
+                    setPage(1);
+                  }}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  Semua Kondisi
+                </li>
+                {priceConditions.map((cond) => (
+                  <li
+                    key={cond}
+                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setPriceFilter(cond);
+                      setIsDropdownOpen(false);
+                      setPage(1);
+                    }}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    {cond}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-wrap justify-center sm:justify-end gap-3 text-xs text-gray-500">
           <div className="flex items-center gap-1">
             <span className="text-red-500">▲</span>
             <span>Harga Naik</span>
