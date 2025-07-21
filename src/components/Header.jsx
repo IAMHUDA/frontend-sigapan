@@ -41,7 +41,7 @@ const Header = () => {
       <nav className={`border-gray-200 transition-all duration-300 fixed top-0 left-0 w-full z-50 ${
         isScrolled 
           ? 'bg-[#3E5F44] shadow-lg py-0' 
-          : 'bg-[#93DA97] bg-opacity-95 py-2'
+          : 'bg-[#93DA97] bg-opacity-95 '
       }`}>
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2 sm:p-4">
           <a 
@@ -67,7 +67,7 @@ const Header = () => {
                 Pemerintah Kabupaten Bantul
               </span>
               <span className={`transition-all duration-300 ${
-                isScrolled ? 'text-sm sm:text-base font-semibold text-white' : 'text-sm sm:text-base md:text-xl font-semibold text-gray-800'
+                isScrolled ? 'text-sm sm:text-base font-semibold text-white' : 'text-sm sm:text-base md:text-lg font-semibold text-gray-800'
               }`}>
                 <span className="block sm:hidden">DINAS KOPERASI, UKM, PERINDUSTRIAN DAN PERDAGANGAN</span>
                 <span className="hidden sm:block lg:whitespace-nowrap">
