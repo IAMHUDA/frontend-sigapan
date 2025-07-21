@@ -177,28 +177,85 @@ const allData = itemsList.map((item, index) => ({
 }));
 
 const ProductCard = ({ item }) => (
-  <div className="bg-white shadow rounded-lg p-4 text-center">
-    <img
-      src={item.image}
-      alt={item.name}
-      className="object-contain h-24 mx-auto mb-2"
-    />
-    <h3 className="text-sm font-semibold mb-1">{item.name}</h3>
-    <p className="text-sm font-bold text-gray-800">
-      Rp {item.price.toLocaleString()} /Kg
-    </p>
-    <div className="text-xs mt-1">
-      <span
-        className={
-          item.change === "up"
-            ? "text-red-500"
-            : item.change === "down"
-            ? "text-green-500"
-            : "text-blue-500"
-        }
-      >
-        {item.change !== "same" ? item.percent : "—"}
-      </span>
+  <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
+    {/* Gambar Produk */}
+    <div className="bg-gray-50 px-4 py-2 flex justify-center items-center">
+      <img
+        src={item.image}
+        alt={item.name}
+        className="max-h-full object-contain"
+      />
+    </div>
+
+    {/* Konten */}
+    <div className="px-4 pb-4 pt-2 text-center flex flex-col justify-between flex-grow">
+      {/* Nama Produk */}
+      <h3 className="text-sm font-semibold text-gray-800 mb-1 leading-tight line-clamp-2">
+        {item.name}
+      </h3>
+
+      {/* Harga */}
+      <p className="text-green-700 text-base font-bold mb-2">
+        Rp {item.price.toLocaleString()}{" "}
+        <span className="text-xs text-gray-500 font-medium">/Kg</span>
+      </p>
+
+      {/* Indikator Perubahan Harga */}
+      <div className="text-xs font-medium flex justify-center gap-1.5">
+        {item.change === "up" && (
+          <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full flex items-center gap-1">
+            <svg
+              className="h-3 w-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+              />
+            </svg>
+            {item.percent}
+          </span>
+        )}
+        {item.change === "down" && (
+          <span className="bg-green-100 text-green-600 px-2 py-1 rounded-full flex items-center gap-1">
+            <svg
+              className="h-3 w-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
+            </svg>
+            {item.percent}
+          </span>
+        )}
+        {item.change === "same" && (
+          <span className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full flex items-center gap-1">
+            <svg
+              className="h-3 w-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
+            </svg>
+            {item.percent}
+          </span>
+        )}
+      </div>
     </div>
   </div>
 );
@@ -246,7 +303,7 @@ const ProductGrid = () => {
         Pantau pergerakan harga semua bahan pokok secara real-time
       </p>
 
-      <div className="flex gap-2 mb-4 overflow-x-auto whitespace-nowrap pb-3">
+      <div className="flex gap-2 mb-7 mt-9 overflow-x-auto whitespace-nowrap pb-3">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -265,20 +322,19 @@ const ProductGrid = () => {
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-2 sm:justify-between items-center mb-6">
+      <div className="flex flex-wrap gap-4 sm:justify-between items-start mb-6 mt-4">
+        {/* Dropdown Filter Harga */}
         <div className="relative w-full sm:w-auto" ref={dropdownRef}>
-          {" "}
-          {/* Apply ref to the dropdown container */}
           <button
             type="button"
-            className="w-full sm:w-48 border rounded px-3 py-2 text-sm bg-white text-left flex items-center justify-between"
+            className="w-full sm:w-48 border border-gray-300 rounded px-3 py-2 text-sm bg-white text-left flex items-center justify-between shadow-sm hover:border-gray-400"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             aria-haspopup="true"
             aria-expanded={isDropdownOpen ? "true" : "false"}
           >
             {priceFilter || "Kondisi Harga"}
             <svg
-              className="-mr-1 ml-2 h-5 w-5"
+              className="ml-2 h-5 w-5 text-gray-500"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -291,38 +347,37 @@ const ProductGrid = () => {
               />
             </svg>
           </button>
+
           {isDropdownOpen && (
-            <div className="absolute z-10 mt-1 w-full sm:w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="absolute z-20 mt-2 w-full sm:w-48 max-h-64 overflow-y-auto rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
               <ul
-                className="py-1"
+                className="py-1 text-sm text-gray-800 divide-y divide-gray-100"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
-                tabIndex="-1"
               >
                 <li
-                  className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                   onClick={() => {
                     setPriceFilter("");
                     setIsDropdownOpen(false);
                     setPage(1);
                   }}
+                  className="block px-4 py-2 cursor-pointer hover:bg-green-100 font-medium"
                   role="menuitem"
-                  tabIndex="-1"
                 >
                   Semua Kondisi
                 </li>
+
                 {priceConditions.map((cond) => (
                   <li
                     key={cond}
-                    className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
                       setPriceFilter(cond);
                       setIsDropdownOpen(false);
                       setPage(1);
                     }}
+                    className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     role="menuitem"
-                    tabIndex="-1"
                   >
                     {cond}
                   </li>
@@ -332,7 +387,8 @@ const ProductGrid = () => {
           )}
         </div>
 
-        <div className="flex flex-wrap justify-center sm:justify-end gap-3 text-xs text-gray-500">
+        {/* Keterangan Warna Harga */}
+        <div className="flex flex-wrap justify-center sm:justify-end gap-3 text-xs text-gray-600">
           <div className="flex items-center gap-1">
             <span className="text-red-500">▲</span>
             <span>Harga Naik</span>
@@ -354,7 +410,7 @@ const ProductGrid = () => {
         ))}
       </div>
 
-      <div className="flex justify-center space-x-2">
+      <div className="flex justify-center space-x-2 mt-15">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 1))}
           className="px-3 py-1 border rounded text-sm hover:bg-gray-50 disabled:opacity-50"
