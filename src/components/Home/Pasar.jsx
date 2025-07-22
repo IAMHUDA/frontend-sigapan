@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import pasarNiten from "../../assets/Niten.jpg";
-import pasarJanten from "../../assets/Janten.jpg";
-import pasarBarongan from "../../assets/Barongan.jpg";
-import pasarBantul from "../../assets/Bantul.jpg";
-import pasarImogiri from "../../assets/Imogiri.jpg";
-import pasarPiyungan from "../../assets/Piyungan.jpg";
-import pasarAngkruksari from "../../assets/Angkruksari.jpg";
-import pasarTuri from "../../assets/Turi.jpg";
-import pasarGumulan from "../../assets/Gumulan.jpg";
-import pasarPijenan from "../../assets/Pijenan.jpg";
-import pasarMangiran from "../../assets/Mangiran.jpg";
-import pasarPleret from "../../assets/Pleret.jpg";
-import pasarPundong from "../../assets/Pundong.jpg";
-import pasarUnggasBantul from "../../assets/UnggasBantul.jpg";
-import pasarHewanImogiri from "../../assets/HewanImogiri.jpg";
-import PasarGatak from "../../assets/Gatak.jpg";
+import pasarNiten from "../../assets/pasar/Niten.jpg";
+import pasarJanten from "../../assets/pasar/Janten.jpg";
+import pasarBarongan from "../../assets/pasar/Barongan.jpg";
+import pasarBantul from "../../assets/pasar/Bantul.jpg";
+import pasarImogiri from "../../assets/pasar/Imogiri.jpg";
+import pasarPiyungan from "../../assets/pasar/Piyungan.jpg";
+import pasarAngkruksari from "../../assets/pasar/Angkruksari.jpg";
+import pasarTuri from "../../assets/pasar/Turi.jpg";
+import pasarGumulan from "../../assets/pasar/Gumulan.jpg";
+import pasarPijenan from "../../assets/pasar/Pijenan.jpg";
+import pasarMangiran from "../../assets/pasar/Mangiran.jpg";
+import pasarPleret from "../../assets/pasar/Pleret.jpg";
+import pasarPundong from "../../assets/pasar/Pundong.jpg";
+import pasarUnggasBantul from "../../assets/pasar/UnggasBantul.jpg";
+import pasarHewanImogiri from "../../assets/pasar/HewanImogiri.jpg";
+import PasarGatak from "../../assets/pasar/Gatak.jpg";
 import { ArrowRight, MapPin, X, Clock, Users } from "lucide-react";
 
 
