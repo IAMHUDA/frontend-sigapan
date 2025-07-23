@@ -1,33 +1,34 @@
 import { useState } from "react";
-import { ArrowRight, Clock, MapPin, Users, X } from "lucide-react";
-import heroBg from "../assets/bg.jpg";
+import {Clock, MapPin, Users, X } from "lucide-react";
 import Produk from "../components/Home/Product";
 import Stok from "../components/Home/Stok";
 import Pasar from "../components/Home/Pasar";
+import Carousel from "../components/home/Carousel";
 
-const HeroSection = () => {
-  return (
-    <div
-      className="w-full bg-cover bg-center flex items-center"
-      style={{ backgroundImage: `url(${heroBg})`, height: "650px" }}
-    >
-      <div className="bg-black/40 text-white p-8 max-w-xl ml-10 rounded-lg shadow-lg">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
-          Selamat datang di SIGAPAN!
-        </h1>
-        <p className="text-sm md:text-base mb-6">
-          Temukan informasi harga pangan terbaru dan terpercaya di Kabupaten
-          Bantul. Disajikan oleh Dinas Koperasi, UKM, Perindustrian dan
-          Perdagangan. Data selalu akurat, transparan, dan diperbarui setiap
-          saat.
-        </p>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow flex items-center gap-2">
-          Lihat Daftar Harga <ArrowRight size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
+
+// const HeroSection = () => {
+//   return (
+//     <div
+//       className="w-full bg-cover bg-center flex items-center"
+//       style={{ backgroundImage: `url(${heroBg})`, height: "650px" }}
+//     >
+//       <div className="bg-black/40 text-white p-8 max-w-xl ml-10 rounded-lg shadow-lg">
+//         <h1 className="text-3xl md:text-4xl font-bold mb-4">
+//           Selamat datang di SIGAPAN!
+//         </h1>
+//         <p className="text-sm md:text-base mb-6">
+//           Temukan informasi harga pangan terbaru dan terpercaya di Kabupaten
+//           Bantul. Disajikan oleh Dinas Koperasi, UKM, Perindustrian dan
+//           Perdagangan. Data selalu akurat, transparan, dan diperbarui setiap
+//           saat.
+//         </p>
+//         <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow flex items-center gap-2">
+//           Lihat Daftar Harga <ArrowRight size={16} />
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
 const DashboardBantul = () => {
   const [selectedPasar, setSelectedPasar] = useState(null);
@@ -37,7 +38,7 @@ const DashboardBantul = () => {
       <div className="border-t border-gray-200"></div>
 
       {/* Hero Section */}
-      <HeroSection />
+      <Carousel/>
 
       {/* Produk */}
       <div className="mt-8 px-4 md:px-10">
