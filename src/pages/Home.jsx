@@ -12,11 +12,11 @@ const Home = () => {
       </section>
 
       {/* Harga Pangan Section */}
-      <section id='harga-pangan' className="w-full py-12 md:py-16 bg-white">
+      {/* <section id='harga-pangan' className="w-full py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4">
           <HargaPangan/>
         </div>
-      </section>
+      </section> */}
 
       {/* Stok Bahan Pokok Section */}
       <section id='stok-bahanpokok' className="w-full py-12 md:py-16 bg-gray-50">

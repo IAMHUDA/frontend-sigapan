@@ -316,4 +316,4 @@ const HargaPangan = () => {
   );
 };
 
-export default HargaPangan;
+export default HargaPangan; 
