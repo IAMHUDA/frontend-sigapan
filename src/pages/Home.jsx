@@ -34,7 +34,7 @@ const DashboardBantul = () => {
   const [selectedPasar, setSelectedPasar] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen mt-[95px] bg-gray-50">
       <div className="border-t border-gray-200"></div>
 
       {/* Hero Section */}
@@ -47,10 +47,10 @@ const DashboardBantul = () => {
 
       <div className="border-t border-gray-200 mt-10"></div>
 
-      {/* Stok Bahan Pokok */}
+      {/* Stok Bahan Pokok
       <div className="mt-8 px-4 md:px-10">
         <Stok />
-      </div>
+      </div> */}
 
       <div className="border-t border-gray-200 mt-10"></div>
 

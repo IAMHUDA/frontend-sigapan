@@ -219,7 +219,7 @@ const ProductGrid = () => {
   const handlePriceFilterChange = (value) => {
     setPriceFilter(value);
     setPage(1);
-    setIsFilterDropdownOpen(false); // Close dropdown after selection
+    setIsFilterDropdownOpen(false);
   };
 
   return (
@@ -235,7 +235,7 @@ const ProductGrid = () => {
             onClick={() => {
               setActiveCategory(cat);
               setPage(1);
-              setIsFilterDropdownOpen(false); // Close dropdown on category change
+              setIsFilterDropdownOpen(false);
             }}
             className={`px-3 py-1 rounded-full text-sm flex-shrink-0 transition-all duration-150 ${
               activeCategory === cat

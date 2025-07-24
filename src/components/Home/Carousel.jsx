@@ -7,7 +7,6 @@ const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Data carousel dengan gambar dan teks
   const slides = [
     {
       id: 1,
@@ -32,25 +31,21 @@ const Carousel = () => {
     }
   ];
 
-  // Auto slide setiap 4 detik
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [currentSlide]);
+  });
 
   const nextSlide = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
-    // Slight delay before changing slide index to allow opacity transition to start
     setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-      // Short delay after changing slide to reset transitioning state
-      // This allows the new slide's content to animate in
       setTimeout(() => setIsTransitioning(false), 100);
-    }, 200); // This delay controls when the new image appears
+    }, 200);
   };
 
   const goToSlide = (index) => {
@@ -65,36 +60,30 @@ const Carousel = () => {
   const getTextPositionClass = (position) => {
     switch (position) {
       case 'left':
-        // Added max-w-2xl to the flex container for left/right to allow text to spread
         return 'items-start text-left pl-8 md:pl-16 lg:pl-24 xl:pl-32 max-w-[80%] md:max-w-[70%] lg:max-w-[60%]';
       case 'right':
-        // Added max-w-2xl to the flex container for left/right to allow text to spread
-        return 'items-end text-right pr-8 md:pr-16 lg:pr-24 xl:pr-32 max-w-[80%] md:max-w-[70%] lg:max-w-[60%] ml-auto'; // ml-auto pushes it to the right
+        return 'items-end text-right pr-8 md:pr-16 lg:pr-24 xl:pr-32 max-w-[80%] md:max-w-[70%] lg:max-w-[60%] ml-auto';
       default:
-        return 'items-center text-center max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto'; // Centered text, with mx-auto
+        return 'items-center text-center max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto';
     }
   };
 
   const getTextAnimationClass = (position, isActive) => {
     if (!isActive) {
-      // For inactive slides, hide and reset position
       switch (position) {
         case 'left':
-          return 'opacity-0 -translate-x-full'; // Animate from left out
+          return 'opacity-0 -translate-x-full';
         case 'right':
-          return 'opacity-0 translate-x-full'; // Animate from right out
+          return 'opacity-0 translate-x-full';
         default:
-          return 'opacity-0 translate-y-8'; // Animate from bottom out
+          return 'opacity-0 translate-y-8';
       }
     }
-    
-    // For active slide, animate into view
     return 'opacity-100 translate-y-0 translate-x-0';
   };
 
   return (
     <div className="relative w-full max-w-[1800px] mx-auto h-64 sm:h-80 md:h-96 lg:h-[500px] xl:h-[600px] overflow-hidden shadow-2xl">
-      {/* Container gambar */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (
           <div
@@ -105,18 +94,12 @@ const Carousel = () => {
                 : 'opacity-0'
             }`}
           >
-            {/* Gambar background */}
             <img
               src={slide.image}
               alt={slide.title}
               className="w-full h-full object-cover"
             />
-            
-            {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            
-            {/* Teks overlay dengan animasi posisi */}
-            {/* This div itself is now directly handling position and width constraints */}
             <div className={`absolute inset-0 flex flex-col justify-center ${getTextPositionClass(slide.textPosition)}`}>
               <div
                 className={`transform transition-all duration-700 ease-out delay-300 ${getTextAnimationClass(
@@ -127,7 +110,6 @@ const Carousel = () => {
                 <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl font-bold text-white mb-2 md:mb-4 drop-shadow-lg">
                   {slide.title}
                 </h2>
-                {/* Removed max-w from <p> as it's now handled by the parent div in getTextPositionClass */}
                 <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-200 drop-shadow-md">
                   {slide.subtitle}
                 </p>
@@ -136,8 +118,6 @@ const Carousel = () => {
           </div>
         ))}
       </div>
-
-      {/* Bar slider di tengah bawah */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {slides.map((_, index) => (
           <button
@@ -152,8 +132,6 @@ const Carousel = () => {
           />
         ))}
       </div>
-
-      {/* Fade overlay saat transisi */}
       {isTransitioning && (
         <div className="absolute inset-0 bg-black/20 transition-opacity duration-200" />
       )}
