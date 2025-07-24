@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ArrowRight, Clock, MapPin, Users, X } from "lucide-react";
 import heroBg from "../assets/bg.jpg";
 import Produk from "../components/Home/Product";
-import Stok from "../components/Home/Stok";
 import Pasar from "../components/Home/Pasar";
 
 const HeroSection = () => {
@@ -46,12 +45,6 @@ const DashboardBantul = () => {
 
       <div className="border-t border-gray-200 mt-10"></div>
 
-      {/* Stok Bahan Pokok */}
-      <div className="mt-8 px-4 md:px-10">
-        <Stok />
-      </div>
-
-      <div className="border-t border-gray-200 mt-10"></div>
 
       {/* Pasar */}
       <div className="mt-8 px-4 md:px-10">
