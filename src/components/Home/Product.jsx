@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowRightLeft } from "lucide-react";
+import { ArrowRightLeft, Download, Calendar } from "lucide-react";
 import berasPremium from "../../assets/bahan pokok/berasPremium.png";
 import berasMedium from "../../assets/bahan pokok/bMedium.png";
 import gulaPasirCurah from "../../assets/bahan pokok/gulaCurah.png";
@@ -191,32 +191,27 @@ const allData = itemsList.map((item, index) => {
   };
 });
 
+
 const ProductCard = ({ item }) => (
   <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col">
-    {/* Gambar Produk */}
-   <div className="bg-gray-50 px-4 py-2 flex justify-center items-center">
+    <div className="bg-gray-50 px-4 py-6 flex justify-center items-center">
       <img
         src={item.image}
         alt={item.name}
-        className="max-h-full object-contain"
+        className="max-h-full max-w-full object-contain"
       />
     </div>
 
-
-    {/* Konten */}
     <div className="px-4 pb-4 pt-2 text-center flex flex-col justify-between flex-grow">
-      {/* Nama Produk */}
       <h3 className="text-sm font-semibold text-gray-800 mb-1 leading-tight line-clamp-2">
         {item.name}
       </h3>
 
-      {/* Harga */}
       <p className="text-green-700 text-base font-bold mb-2">
         Rp {item.price.toLocaleString()}{" "}
         <span className="text-xs text-gray-500 font-medium">/Kg</span>
       </p>
 
-      {/* Indikator Perubahan Harga */}
       <div className="text-xs font-medium flex justify-center gap-1.5">
         {item.change === "up" && (
           <span className="bg-red-100 text-red-600 px-2 py-1 rounded-full flex items-center gap-1">
@@ -247,7 +242,56 @@ const ProductGrid = () => {
   const [showTableView, setShowTableView] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Effect to handle clicks outside the dropdown to close it
+  // Get current date
+  const getCurrentDate = () => {
+    const now = new Date();
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const months = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = months[now.getMonth()];
+    const year = now.getFullYear();
+    
+    return `${dayName}, ${date} ${month} ${year}`;
+  };
+
+  // Export to Excel function
+  const exportToExcel = () => {
+    const dataToExport = filteredData.map((item, index) => ({
+      'No': index + 1,
+      'Komoditas': item.name,
+      'Kategori': item.category,
+      'Nama Pasar': item.marketName,
+      'Status': item.status,
+      'Stok': item.stock,
+      'Harga (Rp)': item.price.toLocaleString()
+    }));
+
+    // Create CSV content
+    const headers = Object.keys(dataToExport[0]);
+    const csvContent = [
+      headers.join(','),
+      ...dataToExport.map(row => 
+        headers.map(header => `"${row[header]}"`).join(',')
+      )
+    ].join('\n');
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Data_Stok_Pasar_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -264,13 +308,11 @@ const ProductGrid = () => {
     const matchCategory =
       activeCategory === "Semua" || item.category === activeCategory;
     
-    // Price filter logic (only for grid view)
     const matchPrice = showTableView || !priceFilter ||
       (priceFilter === "Harga Naik" && item.change === "up") ||
       (priceFilter === "Harga Turun" && item.change === "down") ||
       (priceFilter === "Harga Tetap" && item.change === "same");
     
-    // Market filter logic (only for table view)
     const matchMarket = !showTableView || !marketFilter || item.marketName === marketFilter;
     
     return matchCategory && matchPrice && matchMarket;
@@ -279,12 +321,11 @@ const ProductGrid = () => {
   const totalPages = Math.ceil(filteredData.length / 12);
   const paginatedData = filteredData.slice((page - 1) * 12, page * 12);
 
-  // Get current filter options based on view mode
   const getCurrentFilterOptions = () => {
     if (showTableView) {
-      return pasarOptions; // Market filter for table view
+      return pasarOptions;
     } else {
-      return categories; // Category filter for grid view
+      return categories;
     }
   };
 
@@ -298,10 +339,8 @@ const ProductGrid = () => {
 
   const handleFilterChange = (value) => {
     if (showTableView) {
-      // Handle market filter
       setMarketFilter(value === "Semua Pasar" ? "" : value);
     } else {
-      // Handle category filter
       setActiveCategory(value);
     }
     setIsDropdownOpen(false);
@@ -309,7 +348,7 @@ const ProductGrid = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-7xl mx-auto px-4 py-10 font-inter">
       <h2 className="text-2xl font-bold text-center mb-2">
         Daftar Harga Bahan Pokok
       </h2>
@@ -373,7 +412,6 @@ const ProductGrid = () => {
           <button
             onClick={() => {
               setShowTableView(!showTableView);
-              // Reset filters when switching views
               setPriceFilter("");
               setMarketFilter("");
               setActiveCategory("Semua");
@@ -384,9 +422,28 @@ const ProductGrid = () => {
             <ArrowRightLeft size={16} />
             {showTableView ? "Lihat Harga" : "Lihat Stok"}
           </button>
+
+          {/* Export Excel Button - Only show in table view */}
+          {showTableView && (
+            <button
+              onClick={exportToExcel}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md w-fit text-sm flex items-center gap-2 transition-all duration-150"
+            >
+              <Download size={16} />
+              Export Excel
+            </button>
+          )}
         </div>
 
-        {/* Keterangan Warna Harga - Only show in grid view */}
+        {/* Date Display - Only show in table view */}
+        {showTableView && (
+          <div className="flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+            <Calendar size={16} />
+            <span>Diperbarui: {getCurrentDate()}</span>
+          </div>
+        )}
+
+        {/* Price Filter - Only show in grid view */}
         {!showTableView && (
           <div className="flex flex-wrap justify-center sm:justify-end gap-3 text-sm text-gray-600">
             <div
@@ -449,16 +506,16 @@ const ProductGrid = () => {
         )}
       </div>
 
-      {/* Conditional Rendering berdasarkan showTableView */}
+      {/* Conditional Rendering */}
       {!showTableView ? (
-        // Grid View - Tampilan Harga
+        // Grid View - Price Display
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
           {paginatedData.map((item) => (
             <ProductCard key={item.id} item={item} />
           ))}
         </div>
       ) : (
-        // Table View - Tampilan Stok
+        // Table View - Stock Display
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-md mb-6">
           <div className="mb-4">
             <h3 className="text-lg font-semibold text-gray-800">Data Stok Pasar</h3>
@@ -520,7 +577,7 @@ const ProductGrid = () => {
         </div>
       )}
 
-      {/* Show message when no data found */}
+      {/* No data message */}
       {filteredData.length === 0 && (
         <div className="text-center py-8">
           <p className="text-gray-500">Tidak ada data yang sesuai dengan filter yang dipilih</p>
@@ -560,5 +617,6 @@ const ProductGrid = () => {
     </div>
   );
 };
+
 
 export default ProductGrid;
